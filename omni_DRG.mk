@@ -15,7 +15,7 @@
 #
 
 # Release name
-PRODUCT_RELEASE_NAME := PL2
+PRODUCT_RELEASE_NAME := DRG_sprout
 
 $(call inherit-product, build/target/product/embedded.mk)
 
@@ -61,8 +61,8 @@ PRODUCT_COPY_FILES += \
     system/timezone/output_data/iana/tzdata:recovery/root/system/usr/share/zoneinfo/tzdata
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_NAME := omni_PL2
-PRODUCT_DEVICE := PL2
+PRODUCT_NAME := omni_DRG
+PRODUCT_DEVICE := DRG
 PRODUCT_MANUFACTURER := FIH
 PRODUCT_BRAND := Nokia
-PRODUCT_MODEL := Nokia 6.1
+PRODUCT_MODEL := Nokia 6.1 Plus

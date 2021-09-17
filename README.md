@@ -1,6 +1,6 @@
-# Device Tree for Nokia 6.1 (PL2)
+# Device Tree for Nokia 6.1 (DRG)
 
-The Nokia 6 (codenamed _"PL2"_) is a mid-range smartphone from Nokia.
+The Nokia 6 (codenamed _"DRG"_) is a mid-range smartphone from Nokia.
 It was released in April 2018.
 
 | Basic                   | Spec Sheet                                                                                                                     |
@@ -23,7 +23,7 @@ It was released in April 2018.
 ```
 # Compiling
 $ . build/envsetup.sh
-$ lunch omni_PL2-eng
+$ lunch omni_DRG-eng
 $ make -jx recoveryimage //replace x in -jx with number of cores you want to allot for compilation
 
 ```
