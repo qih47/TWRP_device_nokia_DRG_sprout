@@ -1,0 +1,35 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Run a multi-line script
+        run: |
+          sudo apt update
+          sudo apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python curl wget
+          mkdir ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/*
+          export PATH="${PATH}:~/bin"
+          repo init --depth=1 -u git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-9.0
+          mkdir -p .repo/local_manifests
+          wget "https://raw.githubusercontent.com/Sid127/Sid127/master/twrp_drg.xml" -O .repo/local_manifests/manifest.xml
+          repo sync
+          export ALLOW_MISSING_DEPENDENCIES=true; . build/envsetup.sh; lunch omni_DRG-eng; mka recoveryimage
+      - uses: actions/upload-artifact@v2
+        with:
+          name: recovery.img
+          path: out/target/product/DRG/recovery.img
