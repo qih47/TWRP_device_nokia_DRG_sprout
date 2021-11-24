@@ -17,7 +17,12 @@
 # Release name
 PRODUCT_RELEASE_NAME := DRG_sprout
 
-$(call inherit-product, build/target/product/embedded.mk)
+
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+
+# Inherit language packages
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/pb/config/common.mk)
