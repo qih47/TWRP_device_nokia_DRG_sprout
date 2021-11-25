@@ -24,7 +24,9 @@
 # components.
 
 LOCAL_PATH := device/nokia/DRG_sprout
-TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
+
+# A/B device flags
+TARGET_NO_KERNEL := false
 
 # Architecture
 TARGET_ARCH := arm64
@@ -46,8 +48,7 @@ TARGET_USES_UEFI := true
 
 # Kernel
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc170000 androidboot.hardware=qcom msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3
-BOARD_KERNEL_CMDLINE     += skip_override androidboot.fastboot=1 androidboot.selinux=permissive
-BOARD_KERNEL_BASE        := 0x00000000
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissiveBOARD_KERNEL_BASE        := 0x00000000
 BOARD_KERNEL_OFFSET      := 0x00008000
 BOARD_KERNEL_PAGESIZE    := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
@@ -73,17 +74,24 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2684354560
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 536870912
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # Recovery
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_NO_KERNEL := false
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+RECOVERY_SDCARD_ON_DATA := true
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/root/etc/twrp.fstab
+
+# system.prop
+TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop
 
 #TARGET_NO_RECOVERY := true
 BOARD_USES_RECOVERY_AS_BOOT := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 AB_OTA_UPDATER := true
 
 # TWRP specific build flags
@@ -102,6 +110,12 @@ TW_THEME := portrait_hdpi
 TW_USE_TOOLBOX := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_HAS_EDL_MODE := true
+TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone6/temp
+TW_OZIP_DECRYPT_KEY := "1c4c1ea3a12531ae491b21bb31613c11"
+TW_SKIP_COMPATIBILITY_CHECK := true
+
+# Includes
+TW_INCLUDE_NTFS_3G := true
 
 # Workaround for error copying vendor files to recovery ramdisk
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -111,5 +125,13 @@ TARGET_COPY_OUT_VENDOR := vendor
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 
-TARGET_RECOVERY_DEVICE_MODULES := android.hidl.base@1.0
-TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT)/lib64/android.hidl.base@1.0.so
+# Crypto
+TARGET_HW_DISK_ENCRYPTION := true
+TW_INCLUDE_FBE := true
+TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
+
+# exFAT FS Support
+TW_INCLUDE_FUSE_EXFAT := true
+
+# NTFS Support
+TW_INCLUDE_FUSE_NTFS := true
